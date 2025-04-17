@@ -75,18 +75,32 @@ done
 cairosvg "$MODIFIED_SVG" -o "$OUTPUT_PNG"
 echo "✅ PNG saved to $OUTPUT_PNG"
 
+# Precompute adjusted colors using the script
+color="$new_color"
+color2=$(bash "$HOME/Nebula/U143/scripts/adjust_hex_color.sh" "$color" 16 100 | tr -d '\n')
+color3=$(bash "$HOME/Nebula/U143/scripts/adjust_hex_color.sh" "$color" 58 80 | tr -d '\n')
+color4=$(bash "$HOME/Nebula/U143/scripts/adjust_hex_color.sh" "$color" 66 73 | tr -d '\n')
 
 # Copy original SVG3 ============================================
 cp "$BOX3_SVG" "$MBOX3_SVG"
-awk -v color="$new_color" '
-/id="rect5"/ { found = 1 }
-found && /fill:#/ {
-    sub(/fill:#[0-9a-fA-F]{6}/, "fill:" color)
-    found = 0
+awk -v color1="$color" -v color2="$color2" -v color3="$color3" -v color4="$color4" '
+/id="rect5"/ { found = "color1" }
+/id="rect3"/ { found = "color2" }
+/id="rect4"/ { found = "color3" }
+/id="rect15"/ { found = "color4" }
+{
+    if (found && /style=/) {
+        sub(/fill:#[0-9a-fA-F]{6}/, "fill:" (found == "color1" ? color1 : (found == "color2" ? color2 : (found == "color3" ? color3 : color4))))
+        found = ""
+    }
+    print
 }
-{ print }
 ' "$MBOX3_SVG" > "${MBOX3_SVG}.tmp" && mv "${MBOX3_SVG}.tmp" "$MBOX3_SVG"
-echo "🔁 Replacing fill color with $new_color"
+
+echo "🔁 Replacing fill color with $color"
+echo "🔁 Replacing fill color with $color2"
+echo "🔁 Replacing fill color with $color3"
+echo "🔁 Replacing fill color with $color4"
 cairosvg "$MBOX3_SVG" -o "$BOX3_PNG"
 echo "✅ PNG saved to $BOX3_PNG"
 
