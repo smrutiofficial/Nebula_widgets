@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="541.92798"
+   height="81.903801"
+   viewBox="0 0 541.92798 81.903801"
+   fill="none"
+   version="1.1"
+   id="svg9"
+   sodipodi:docname="cpalate.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs9" />
+  <sodipodi:namedview
+     id="namedview9"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:export-bgcolor="#00000003">
+    <inkscape:page
+       x="0"
+       y="0"
+       width="541.92798"
+       height="81.903801"
+       id="page2"
+       margin="0"
+       bleed="0" />
+  </sodipodi:namedview>
+  <path
+     id="rect1" 
+     fill="#29284a"
+     d="M 526.928,0 H 15 C 6.71573,0 0,6.71573 0,15 v 51.9038 c 0,8.2843 6.71573,15 15,15 h 511.928 c 8.284,0 15,-6.7157 15,-15 V 15 c 0,-8.28427 -6.716,-15 -15,-15 z"
+     />
+  <path
+     id="rect2" 
+     fill="#7c6ede"
+     d="M 81.0626,11.9043 H 15.9558 v 58.3025 h 65.1068 z"
+     />
+  <path
+     id="rect3" 
+     fill="#ddcff6"
+     d="M 145.063,11.9043 H 79.9558 v 58.3025 h 65.1072 z"
+     />
+  <path
+     id="rect4" 
+     fill="#eccef7"
+     d="m 209.063,11.9043 h -65.107 v 58.3025 h 65.107 z"
+     />
+  <path
+     id="rect5" 
+     fill="#6c56cb"
+     d="m 273.063,11.9043 h -65.107 v 58.3025 h 65.107 z"
+     />
+  <path
+     id="rect6" 
+     fill="#5040ba"
+     d="m 337.063,11.9043 h -65.107 v 58.3025 h 65.107 z"
+     />
+  <path
+     id="rect7" 
+     fill="#3c30a5"
+     d="m 401.063,11.9043 h -65.107 v 58.3025 h 65.107 z"
+     />
+  <path
+     id="rect8" 
+     fill="#2a2490"
+     d="m 465.063,11.9043 h -65.107 v 58.3025 h 65.107 z"
+     />
+  <path
+     id="rect9" 
+     fill="#131059"
+     d="m 529.063,11.9043 h -65.107 v 58.3025 h 65.107 z"
+     stroke="#c0bedc"
+     stroke-width="1.63173"
+     />
+</svg>
