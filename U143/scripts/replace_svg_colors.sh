@@ -20,6 +20,7 @@ BOX1_PNG="$HOME/Nebula/U143/conky_data/box1.png"
 BOX2_PNG="$HOME/Nebula/U143/conky_data/box2.png"
 BOX3_PNG="$HOME/Nebula/U143/conky_data/box3.png"
 
+
 # Check if files exist
 if [ ! -f "$SVG_PATH" ]; then
     echo "❌ SVG file not found at $SVG_PATH"
@@ -39,13 +40,14 @@ ids=(rect9 rect8 rect7 rect6 rect5 rect4 rect3 rect2 rect1)
 
 # Copy original SVG
 cp "$SVG_PATH" "$MODIFIED_SVG"
+bgclo=$(bash "$HOME/Nebula/U143/scripts/adjust_hex_color.sh" "$new_color" 30 20 | tr -d '\n')
 
 # Replace only the fill inside style=""
 for i in "${!ids[@]}"; do
     id="${ids[$i]}"
 
     if [ "$id" = "rect1" ]; then
-        color="$new_color"
+        color="$bgclo"
     else
         color="${colors[$i]}"
     fi
@@ -74,9 +76,8 @@ done
 # Convert the modified SVG to PNG
 cairosvg "$MODIFIED_SVG" -o "$OUTPUT_PNG"
 echo "✅ PNG saved to $OUTPUT_PNG"
-
 # Precompute adjusted colors using the script
-color="$new_color"
+color=$(bash "$HOME/Nebula/U143/scripts/adjust_hex_color.sh" "$new_color" 30 20 | tr -d '\n')
 color2=$(bash "$HOME/Nebula/U143/scripts/adjust_hex_color.sh" "$color" 16 100 | tr -d '\n')
 color3=$(bash "$HOME/Nebula/U143/scripts/adjust_hex_color.sh" "$color" 58 80 | tr -d '\n')
 color4=$(bash "$HOME/Nebula/U143/scripts/adjust_hex_color.sh" "$color" 66 73 | tr -d '\n')
@@ -106,7 +107,7 @@ echo "✅ PNG saved to $BOX3_PNG"
 
 # Copy original SVG2 ============================================
 cp "$BOX2_SVG" "$MBOX2_SVG"
-awk -v color="$new_color" '
+awk -v color="$color" '
 /id="rect2"/ { found = 1 }
 found && /fill:#/ {
     sub(/fill:#[0-9a-fA-F]{6}/, "fill:" color)
@@ -120,7 +121,7 @@ echo "✅ PNG saved to $BOX2_PNG"
 
 # Copy original SVG1 ==============================================
 cp "$BOX1_SVG" "$MBOX1_SVG"
-awk -v color="$new_color" '
+awk -v color="$color" '
 /id="rect1"/ { found = 1 }
 found && /fill:#/ {
     sub(/fill:#[0-9a-fA-F]{6}/, "fill:" color)
