@@ -34,47 +34,47 @@
   </sodipodi:namedview>
   <path
      id="rect1" 
-     fill="#243133"
+     fill="#252433"
      d="M 526.928,0 H 15 C 6.71573,0 0,6.71573 0,15 v 51.9038 c 0,8.2843 6.71573,15 15,15 h 511.928 c 8.284,0 15,-6.7157 15,-15 V 15 c 0,-8.28427 -6.716,-15 -15,-15 z"
      />
   <path
      id="rect2" 
-     fill="#adc9c4"
+     fill="#7c6ede"
      d="M 81.0626,11.9043 H 15.9558 v 58.3025 h 65.1068 z"
      />
   <path
      id="rect3" 
-     fill="#9cc0be"
+     fill="#ddcff6"
      d="M 145.063,11.9043 H 79.9558 v 58.3025 h 65.1072 z"
      />
   <path
      id="rect4" 
-     fill="#88b1b2"
+     fill="#eccef7"
      d="m 209.063,11.9043 h -65.107 v 58.3025 h 65.107 z"
      />
   <path
      id="rect5" 
-     fill="#3d6870"
+     fill="#6c56cb"
      d="m 273.063,11.9043 h -65.107 v 58.3025 h 65.107 z"
      />
   <path
      id="rect6" 
-     fill="#2b4c53"
+     fill="#5040ba"
      d="m 337.063,11.9043 h -65.107 v 58.3025 h 65.107 z"
      />
   <path
      id="rect7" 
-     fill="#719ca0"
+     fill="#3c30a5"
      d="m 401.063,11.9043 h -65.107 v 58.3025 h 65.107 z"
      />
   <path
      id="rect8" 
-     fill="#537f85"
+     fill="#2a2490"
      d="m 465.063,11.9043 h -65.107 v 58.3025 h 65.107 z"
      />
   <path
      id="rect9" 
-     fill="#193135"
+     fill="#131059"
      d="m 529.063,11.9043 h -65.107 v 58.3025 h 65.107 z"
      stroke="#c0bedc"
      stroke-width="1.63173"

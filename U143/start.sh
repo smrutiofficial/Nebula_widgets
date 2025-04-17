@@ -1,69 +1,75 @@
 #!/bin/bash
 
-# Path to your base Conky config
 CONKY_TEMPLATE="$(dirname "$0")/conky.conf"
 CONKY_TMP="/tmp/conky_dynamic.conf"
-
-# File being watched for changes
-WATCHED_FILE="$HOME/Nebula/colors.txt"
-
-# CSS file with background color
 css_file="$HOME/.config/gtk-4.0/gtk.css"
+COLOR_FILE="$HOME/Nebula/colors.txt"
 
-# Extract hex code from GTK theme
-hex_code=$(sed -n '/^\.background {$/{
-    N
-    s/^\.background {\n  background-color: \(#[0-9a-fA-F]\{6\}\);/\1/p
-}' "$css_file")
-
-# Set font cache
 export FONTCONFIG_PATH="$(dirname "$0")/font"
 fc-cache -fv "$FONTCONFIG_PATH"
 
-# Kill existing Conky
-killall conky 2>/dev/null
+# Function to extract a valid hex code
+get_valid_hex_code() {
+    local attempts=5
+    local delay=0.5
+    local hex=""
 
-# Generate images
-bash "$HOME/Nebula/U143/scripts/replace_svg_colors.sh" "$hex_code"
+    for ((i=1; i<=attempts; i++)); do
+        sleep "$delay"
+        hex=$(sed -n '/^\.background {$/{
+            N
+            s/^\.background {\n  background-color: \(#[0-9a-fA-F]\{6\}\);/\1/p
+        }' "$css_file")
 
-# Compute the adjusted color
-# Strip # and sanitize length to 6 characters max
-# Compute the adjusted color
-#raw_color=$(bash "$HOME/Nebula/U143/scripts/adjust_hex_color.sh" "$hex_code" 16 100 | tr -d '\n' | tr -d '#')
+        if [[ $hex =~ ^#[0-9a-fA-F]{6}$ ]]; then
+            echo "$hex"
+            return
+        fi
+    done
 
+    echo ""
+}
 
-# Add the leading '#' back
-temp_color=$(bash "$HOME/Nebula/U143/scripts/adjust_hex_color.sh" "$hex_code" 58 80 | tr -d '\n' | tr -d '#')
-temp_color2=$(bash "$HOME/Nebula/U143/scripts/adjust_hex_color.sh" "$hex_code" 8 100 | tr -d '\n' | tr -d '#')
+# Function to launch/relaunch conky
+update_conky() {
+    sleep 6
+    hex_code=$(get_valid_hex_code)
 
-# Replace placeholder in template with real color
-sed -e "s|\${color \$TEMP_COLOR}|\${color $temp_color}|g" \
-    -e "s|\${color \$TEMP_COLOR2}|\${color $temp_color2}|g" \
-    "$CONKY_TEMPLATE" > "$CONKY_TMP"
+    if [[ -z "$hex_code" ]]; then
+        echo "❌ Hex code not found. Aborting update."
+        return
+    fi
 
+    echo "🎨 Using hex color: $hex_code"
 
+    temp_color=$(bash "$HOME/Nebula/U143/scripts/adjust_hex_color.sh" "$hex_code" 58 80 | tr -d '\n' | tr -d '#')
+    temp_color2=$(bash "$HOME/Nebula/U143/scripts/adjust_hex_color.sh" "$hex_code" 8 100 | tr -d '\n' | tr -d '#')
 
-# Launch Conky with the modified config
-conky -c "$CONKY_TMP" &
+    [[ -z "$temp_color" ]] && temp_color="${hex_code:1}"
+    [[ -z "$temp_color2" ]] && temp_color2="${hex_code:1}"
 
-echo "Initial Conky launched. Watching: $WATCHED_FILE"
+    # Replace placeholders
+    sed -e "s|\${color \$TEMP_COLOR}|\${color $temp_color}|g" \
+        -e "s|\${color \$TEMP_COLOR2}|\${color $temp_color2}|g" \
+        "$CONKY_TEMPLATE" > "$CONKY_TMP"
 
-# Watch for changes
-while inotifywait -e modify "$WATCHED_FILE"; do
-    echo "Change detected in $WATCHED_FILE"
-
-    sleep 2
-
-    # Update image again
+    # Refresh SVGs
     bash "$HOME/Nebula/U143/scripts/replace_svg_colors.sh" "$hex_code"
 
+    # Restart Conky
     killall conky 2>/dev/null
+    sleep 1.5
+    conky -D -c "$CONKY_TMP" &
+    echo "✅ Conky updated and relaunched"
+}
 
-    sleep 8
+# First-time launch
+update_conky
+echo "👁️  Watching for changes: $COLOR_FILE"
 
-    # Regenerate temp config with latest color
-    temp_color=$(bash "$HOME/Nebula/U143/scripts/adjust_hex_color.sh" "$hex_code" 16 100 | tr -d '\n')
-    sed "s|\$TEMP_COLOR|$temp_color|g" "$CONKY_TEMPLATE" > "$CONKY_TMP"
-
-    conky -c "$CONKY_TMP" &
+# Watch loop
+while inotifywait -e close_write "$COLOR_FILE"; do
+    echo "📦 Colors modified. Reloading..."
+    sleep 2
+    update_conky
 done
