@@ -11,14 +11,17 @@ OUTPUT_PNG="$HOME/Nebula/U143/conky_data/cpalate.png"
 BOX1_SVG="$HOME/Nebula/U143/conky_data/box1.svg"
 BOX2_SVG="$HOME/Nebula/U143/conky_data/box2.svg"
 BOX3_SVG="$HOME/Nebula/U143/conky_data/box3.svg"
+BOX5_SVG="$HOME/Nebula/U143/conky_data/box5.svg"
 # modify svg
 MBOX1_SVG="$HOME/Nebula/U143/conky_data/mbox1.svg"
 MBOX2_SVG="$HOME/Nebula/U143/conky_data/mbox2.svg"
 MBOX3_SVG="$HOME/Nebula/U143/conky_data/mbox3.svg"
+MBOX5_SVG="$HOME/Nebula/U143/conky_data/mbox5.svg"
 # output png
 BOX1_PNG="$HOME/Nebula/U143/conky_data/box1.png"
 BOX2_PNG="$HOME/Nebula/U143/conky_data/box2.png"
 BOX3_PNG="$HOME/Nebula/U143/conky_data/box3.png"
+BOX5_PNG="$HOME/Nebula/U143/conky_data/box5.png"
 
 
 # Check if files exist
@@ -132,5 +135,20 @@ found && /fill:#/ {
 echo "🔁 Replacing fill color with $new_color"
 cairosvg "$MBOX1_SVG" -o "$BOX1_PNG"
 echo "✅ PNG saved to $BOX1_PNG"
+
+# Copy original SVG5 ==============================================
+cp "$BOX5_SVG" "$MBOX5_SVG"
+awk -v color1="$color" -v color2="$color2" -v color4="$color4" '
+{
+    gsub(/#29284a/, color1)
+    gsub(/#7c78a3/, color2)
+    gsub(/#6765ab/, color4)
+    print
+}
+' "$MBOX5_SVG" > "${MBOX5_SVG}.tmp" && mv "${MBOX5_SVG}.tmp" "$MBOX5_SVG"
+echo "🔁 Replacing fill color with $new_color"
+cairosvg "$MBOX5_SVG" -o "$BOX5_PNG"
+echo "✅ PNG saved to $BOX5_PNG"
+
 
 
