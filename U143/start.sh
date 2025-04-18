@@ -32,7 +32,6 @@ get_valid_hex_code() {
 
 # Function to launch/relaunch conky
 update_conky() {
-    sleep 6
     hex_code=$(get_valid_hex_code)
 
     if [[ -z "$hex_code" ]]; then

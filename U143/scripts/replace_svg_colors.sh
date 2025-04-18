@@ -88,15 +88,11 @@ color4=$(bash "$HOME/Nebula/U143/scripts/adjust_hex_color.sh" "$color" 66 73 | t
 # Copy original SVG3 ============================================
 cp "$BOX3_SVG" "$MBOX3_SVG"
 awk -v color1="$color" -v color2="$color2" -v color3="$color3" -v color4="$color4" '
-/id="rect5"/ { found = "color1" }
-/id="rect3"/ { found = "color2" }
-/id="rect4"/ { found = "color3" }
-/id="rect15"/ { found = "color4" }
 {
-    if (found && /style=/) {
-        sub(/fill:#[0-9a-fA-F]{6}/, "fill:" (found == "color1" ? color1 : (found == "color2" ? color2 : (found == "color3" ? color3 : color4))))
-        found = ""
-    }
+    gsub(/#29284a/, color1)
+    gsub(/#7c78a3/, color2)
+    gsub(/#514e91/, color3)
+    gsub(/#3c3a6b/, color4)
     print
 }
 ' "$MBOX3_SVG" > "${MBOX3_SVG}.tmp" && mv "${MBOX3_SVG}.tmp" "$MBOX3_SVG"
